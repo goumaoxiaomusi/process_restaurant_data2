@@ -3,9 +3,12 @@ import { Flex, Box,Select, Spacer } from "@chakra-ui/react";
 import ResCard from "../components/ResCard";
 import useFetch from "../hooks/useFetch";
 import { useState,useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 function Dashboard() {
-    const {data: restaurants, isPending, error} = useFetch('http://localhost:8080/restaurant/RM77EX')
+    const{postcode} = useParams()
+    console.log("Dashboard postcode"+postcode)
+    const {data: restaurants, isPending, error} = useFetch(`http://localhost:8080/restaurant/${postcode}`)
     const [cities, setCities] = useState([]);
     const [selected,setSelected] = useState('');
     const [result, setResult] = useState([]);
@@ -20,9 +23,7 @@ function Dashboard() {
         }
     }, [restaurants, selected])
     
-    // const ratings = [...new Set(restaurants.map((restaurant) => restaurant.restaurant.rating.starRating))];
-    // const cities = [...new Set(jsonData.map((restaurant) => restaurant.restaurant.address.city))];
-    // const cuisines = [...new Set(jsonData.map((restaurant) => restaurant.restaurant.cuisines.name))];
+
     function handleOnclick() {
         const newCities = restaurants.map((restaurant) => restaurant.address.city);
         const uniqueCitiesSet = new Set(newCities);
